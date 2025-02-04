@@ -18,6 +18,7 @@ import {
   Lock,
   MessageSquare,
 } from "lucide-react";
+import ConnectButton from "@/components/connectButton";
 
 export default function CreateLixiForm() {
   const [amount, setAmount] = useState("");
@@ -195,6 +196,8 @@ export default function CreateLixiForm() {
               </div>
             )}
           </div>
+
+          <ConnectButton />
 
           {/* Submit Button */}
           <Button

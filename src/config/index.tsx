@@ -2,7 +2,7 @@ import { defaultWagmiConfig } from "@web3modal/wagmi/react/config";
 import { favicon } from "@/assets/image";
 
 import { cookieStorage, createStorage } from "wagmi";
-import { mainnet, sepolia } from "wagmi/chains";
+import { mainnet, sepolia, kairos } from "wagmi/chains";
 
 export const projectId = "0bf2f72586a82f5184968f3ac8d7f1d0";
 
@@ -17,7 +17,7 @@ const metadata = {
 };
 
 // Create wagmiConfig
-const chains = [mainnet, sepolia] as const;
+const chains = [mainnet, sepolia, kairos] as const;
 export const config = defaultWagmiConfig({
   chains,
   projectId,

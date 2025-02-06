@@ -1,5 +1,8 @@
 import "./globals.css";
 import type { Metadata } from "next";
+import { Geist, Geist_Mono, Pacifico } from "next/font/google";
+import "./globals.css";
+
 import { headers } from "next/headers";
 import { favicon } from "@/assets/image";
 
@@ -7,6 +10,22 @@ import { cookieToInitialState } from "wagmi";
 
 import { config } from "@/config";
 import Web3ModalProvider from "@/context";
+
+const geistSans = Geist({
+  variable: "--font-geist-sans",
+  subsets: ["latin"],
+});
+
+const geistMono = Geist_Mono({
+  variable: "--font-geist-mono",
+  subsets: ["latin"],
+});
+
+const pacifico = Pacifico({
+  subsets: ["vietnamese"],
+  weight: ["400"],
+  variable: "--font-pacifico",
+});
 
 export const metadata: Metadata = {
   title: "Web 3.0 Lì Xì Trực Tuyến",
@@ -32,7 +51,9 @@ export default async function RootLayout({
   );
   return (
     <html lang="en">
-      <body>
+      <body
+        className={`${geistSans.variable} ${geistMono.variable} ${pacifico.variable} antialiased`}
+      >
         <Web3ModalProvider initialState={initialState}>
           {children}
         </Web3ModalProvider>

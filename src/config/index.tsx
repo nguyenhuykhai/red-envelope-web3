@@ -1,5 +1,4 @@
 import { defaultWagmiConfig } from "@web3modal/wagmi/react/config";
-import { favicon } from "@/assets/image";
 
 import { cookieStorage, createStorage } from "wagmi";
 import { mainnet, sepolia, kairos } from "wagmi/chains";
@@ -13,7 +12,7 @@ const metadata = {
   description:
     "Website cho phép người dùng tạo và nhận Lì Xì trực tuyến thông qua các nhiệm vụ, sự kiện đặc biệt, hoặc gửi trực tiếp cho người thân, bạn bè. Ứng dụng sử dụng công nghệ Blockchain để đảm bảo tính minh bạch, bảo mật. Người dùng có thể tham gia vào các sự kiện lì xì hoặc tự tạo phong bao lì xì để gửi cho người khác.",
   url: "https://web3modal.com", // origin must match your domain & subdomain
-  icons: [favicon.src],
+  icons: ["https://web3modal.com/favicon.ico"],
 };
 
 // Create wagmiConfig

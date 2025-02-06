@@ -4,7 +4,6 @@ import { Geist, Geist_Mono, Pacifico } from "next/font/google";
 import "./globals.css";
 
 import { headers } from "next/headers";
-import { favicon } from "@/assets/image";
 
 import { cookieToInitialState } from "wagmi";
 
@@ -31,9 +30,6 @@ export const metadata: Metadata = {
   title: "Web 3.0 Lì Xì Trực Tuyến",
   description:
     "Website cho phép người dùng tạo và nhận Lì Xì trực tuyến thông qua các nhiệm vụ, sự kiện đặc biệt, hoặc gửi trực tiếp cho người thân, bạn bè. Ứng dụng sử dụng công nghệ Blockchain để đảm bảo tính minh bạch, bảo mật. Người dùng có thể tham gia vào các sự kiện lì xì hoặc tự tạo phong bao lì xì để gửi cho người khác.",
-  icons: {
-    icon: favicon.src,
-  },
   robots: {
     index: true,
     follow: true,

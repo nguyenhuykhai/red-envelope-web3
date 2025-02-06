@@ -1,7 +1,17 @@
 "use client";
 import { formatBalance } from "@/lib/utils";
 import { formatEther } from "ethers";
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useState, useCallback } from "react";
+import { Network, Alchemy, GetTokenPriceBySymbolResponse } from "alchemy-sdk";
+
+const settings = {
+  apiKey:
+    process.env.NEXT_PUBLIC_ALCHEMY_API_KEY ||
+    "Stz-Sv8gp4xymJo03Pl9z_o73nBtSEkB",
+  network: Network.ETH_MAINNET,
+};
+
+const alchemy = new Alchemy(settings);
 
 interface EthConverterProps {
   value: bigint;
@@ -23,58 +33,68 @@ const EthConverter: React.FC<EthConverterProps> = ({ value, symbol }) => {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
 
-  useEffect(() => {
-    const fetchEthPrice = async () => {
-      try {
-        setLoading(true);
-        setError(null);
-
-        const ethAmount = Number(formatEther(value));
-        if (!ethAmount) {
-          setEthToUsd({ ethAmount: "0", ethPrice: "0", usdValue: "0" });
-          return;
-        }
-
-        // Fetch current ETH price from CoinGecko API
-        const response = await fetch(
-          "https://api.coingecko.com/api/v3/simple/price?ids=ethereum&vs_currencies=usd"
-        );
-
-        if (!response.ok) {
-          throw new Error(`HTTP error! status: ${response.status}`);
-        }
-
-        const data = await response.json();
-        const ethPrice = data.ethereum.usd;
-
-        // Calculate USD value
-        const usdValue = ethAmount * ethPrice;
-
-        setEthToUsd({
-          ethAmount: ethAmount.toFixed(4),
-          ethPrice: ethPrice.toFixed(2),
-          usdValue: usdValue.toFixed(2),
-        });
-      } catch (error) {
-        const errorMessage =
-          error instanceof Error ? error.message : "An unknown error occurred";
-        console.error("Failed to fetch ETH price:", errorMessage);
-        setError(errorMessage);
+  const fetchEthPrice = useCallback(async () => {
+    try {
+      const ethAmount = Number(formatEther(value));
+      if (!ethAmount) {
         setEthToUsd({ ethAmount: "0", ethPrice: "0", usdValue: "0" });
-      } finally {
-        setLoading(false);
+        return;
       }
-    };
 
-    fetchEthPrice();
+      const ethPriceResponse: GetTokenPriceBySymbolResponse =
+        await alchemy.prices.getTokenPriceBySymbol(["ETH"]);
+
+      if (
+        !ethPriceResponse ||
+        !ethPriceResponse.data ||
+        !ethPriceResponse.data.length
+      ) {
+        throw new Error("Failed to fetch ETH price");
+      }
+
+      const usdValue =
+        ethAmount * Number(ethPriceResponse.data[0].prices[0].value);
+
+      setEthToUsd({
+        ethAmount: ethAmount.toFixed(4),
+        ethPrice: Number(ethPriceResponse.data[0].prices[0].value).toFixed(2),
+        usdValue: usdValue.toFixed(2),
+      });
+    } catch (err) {
+      const errorMessage =
+        err instanceof Error ? err.message : "Failed to fetch ETH price";
+      console.error("Error fetching ETH price:", errorMessage);
+      setError(errorMessage);
+    } finally {
+      setLoading(false);
+    }
   }, [value]);
 
-  if (loading) {
-    return <div>Loading...</div>;
+  useEffect(() => {
+    // Initial fetch
+    fetchEthPrice();
+
+    // Set up interval for real-time updates (every 10 seconds)
+    const intervalId = setInterval(fetchEthPrice, 10000);
+
+    // Cleanup on unmount
+    return () => clearInterval(intervalId);
+  }, [fetchEthPrice]);
+
+  if (loading && ethToUsd.usdValue === "0") {
+    return (
+      <div className="text-center space-y-4">
+        <div className="animate-pulse bg-gray-200 h-10 w-32 mx-auto rounded"></div>
+      </div>
+    );
   }
 
   if (error) {
-    return <div>Error: {error}</div>;
+    return (
+      <div className="text-center text-red-500">
+        Unable to fetch price. Please try again later.
+      </div>
+    );
   }
 
   return (

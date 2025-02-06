@@ -1,7 +1,7 @@
 import "./globals.css";
 import type { Metadata } from "next";
 import { Geist, Geist_Mono, Pacifico } from "next/font/google";
-import "./globals.css";
+import logo from "../../public/logo2.png";
 
 import { headers } from "next/headers";
 
@@ -34,6 +34,7 @@ export const metadata: Metadata = {
     index: true,
     follow: true,
   },
+  icons: [logo.src],
 };
 
 export default async function RootLayout({

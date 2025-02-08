@@ -1,5 +1,5 @@
 "use client";
-import { formatBalance } from "@/lib/utils";
+import { formatBalance } from "@/utils/common";
 import { formatEther } from "ethers";
 import React, { useEffect, useState, useCallback } from "react";
 import { Network, Alchemy, GetTokenPriceBySymbolResponse } from "alchemy-sdk";

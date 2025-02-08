@@ -9,7 +9,7 @@ import Image from "next/image";
 import { useEffect, useState } from "react";
 import { useAccount, useBalance, UseBalanceReturnType } from "wagmi";
 import { CircleHelp } from "lucide-react";
-import { shortenAddress } from "@/lib/utils";
+import { shortenAddress } from "@/utils/common";
 
 export interface UserInfo {
   address: `0x${string}` | undefined;

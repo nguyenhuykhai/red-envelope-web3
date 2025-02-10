@@ -1,0 +1,32 @@
+name: Deploy to Azure VPS
+
+on:
+  push:
+    branches: [main] # Trigger khi push lên nhánh main
+
+env:
+  VPS_HOST: ${{ secrets.VPS_HOST }}
+  VPS_USER: ${{ secrets.VPS_USER }}
+  PROJECT_DIR: "/www/var/nextjs/red-envelope-web3" # Thay bằng path thực tế trên VPS
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Setup SSH
+        uses: webfactory/ssh-agent@v0.7.0
+        with:
+          ssh-private-key: ${{ secrets.SSH_PRIVATE_KEY }}
+
+      - name: Deploy to VPS
+        run: |
+          ssh -o StrictHostKeyChecking=no ${{ secrets.VPS_USER }}@${{ secrets.VPS_HOST }} "
+            cd $PROJECT_DIR &&
+            git pull origin main &&
+            docker-compose down &&
+            docker-compose up -d --build &&
+            docker image prune -f
+          "

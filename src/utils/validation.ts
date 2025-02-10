@@ -51,9 +51,9 @@ export const isFormValid = (
   ethToUsd: EthToUsd
 ): boolean => {
   return (
-    formData.amount &&
+    formData.amount.trim() !== "" &&
     formData.recipients > 0 &&
-    formData.message &&
+    formData.message.trim() !== "" &&
     !Object.values(errors).some((error) => error) &&
     Number(ethToUsd.usdValue) > 0
   );

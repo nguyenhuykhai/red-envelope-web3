@@ -2,12 +2,9 @@ version: "3.8"
 
 services:
   nextjs:
-    build:
-      context: .
-      dockerfile: Dockerfile
+    image: nguyenhuykhai/web3-app:1.2
     environment:
       NODE_ENV: production
-    # Không cần ánh xạ port ra ngoài vì chỉ sử dụng nội bộ (Nginx reverse proxy sẽ tiếp nhận request từ bên ngoài)
     expose:
       - "3000"
     restart: always
@@ -15,11 +12,9 @@ services:
       - app-network-1.0
 
   nginx:
-    image: nginx:latest
+    image: nguyenhuykhai/red-envelope-nginx:1.0
     ports:
-      - "80:80" # Ánh xạ port 80 của VPS đến port 80 trong container Nginx
-    volumes:
-      - ./nginx.conf:/etc/nginx/nginx.conf:ro
+      - "80:80"
     depends_on:
       - nextjs
     restart: always

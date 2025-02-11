@@ -50,7 +50,7 @@ const AddressInfo = () => {
     return (
       <div className="flex items-center mb-8 gap-4">
         <h1 className="text-2xl md:text-3xl font-bold text-center flex-1 text-red-800 bg-clip-text text-transparent bg-gradient-to-r from-red-800 to-amber-900">
-          Tạo mã lì xì
+          Tạo mã lì xì của bạn
         </h1>
       </div>
     );

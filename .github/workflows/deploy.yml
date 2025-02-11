@@ -3,7 +3,7 @@ name: Deploy Next.js to Azure VPS
 on:
   push:
     branches:
-      - main
+      - production
 
 jobs:
   build-and-deploy:

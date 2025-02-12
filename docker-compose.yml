@@ -2,7 +2,7 @@ version: "3.8"
 
 services:
   nextjs:
-    image: nguyenhuykhai/web3-app:1.2
+    image: nguyenhuykhai/web3-app:latest
     environment:
       NODE_ENV: production
     expose:
@@ -12,7 +12,7 @@ services:
       - app-network-1.0
 
   nginx:
-    image: nguyenhuykhai/red-envelope-nginx:1.0
+    image: nguyenhuykhai/red-envelope-nginx:latest
     ports:
       - "80:80"
     depends_on:
